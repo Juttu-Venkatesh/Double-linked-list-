@@ -1,0 +1,245 @@
+1 #include<stdio.h>
+ 2 #include<stdlib.h>
+ 3 struct node
+ 4 {
+ 5 int data;
+ 6 struct node *next,*pre;
+ 7 };
+ 8 struct node * create_dl(struct node *);
+ 9 void print(struct node *);
+ 10 struct node * insert_beg(struct node *);
+ 11 struct node * insert_end(struct node *);
+ 12 struct node * insert_val(struct node *);
+ 13 struct node * insert_pos(struct node *);
+ 14 struct node * delete_beg(struct node *);
+ 15 struct node * delete_end(struct node *);
+ 16 struct node * delete_val(struct node *);
+ 17 struct node * delete_pos(struct node *);
+ 18 void main()
+ 19 {
+ 20 struct node *dl=NULL;
+ 21 int ch;
+ 22 printf("1.Creating and printing doubly linked list:\n2.Insertion at beginning:\n3.Insertion at
+ending:\n4.Insertion at middle by value:\n5.Insertion at middle by position:\n6.Deletion at
+beginning:\n7.Deletion at Ending:\n8.Deletion at middle by value:\n9.Deletion at middle by position:\n");
+ 23 printf("Enter the choice:\n");
+ 24 scanf("%d",&ch);
+ 25 switch(ch)
+ 26 {
+ 27 case 1 : dl=create_dl(dl);
+ 28 print(dl);
+ 29 break;
+ 30 case 2 : dl=insert_beg(dl);
+ 31 print(dl);
+ 32 break;
+ 33 case 3 : dl=insert_end(dl);
+ 34 print(dl);
+ 35 break;
+ 36 case 4 : dl=insert_val(dl);
+ 37 print(dl);
+ 38 break;
+ 39 case 5 : dl=insert_pos(dl);
+ 40 print(dl);
+ 41 break;
+ 42 case 6 : dl=delete_beg(dl);
+ 43 print(dl);
+ 44 break;
+ 45 case 7 : dl=delete_end(dl);
+ 46 print(dl);
+ 47 break;
+ 48 case 8 : dl=delete_val(dl);
+ 49 print(dl);
+ 50 break;
+ 51 case 9 : dl=delete_pos(dl);
+ 52 print(dl);
+ 53 break;
+ 54 }
+ 55 }
+ 56 struct node * create_dl(struct node *dl)
+ 57 {
+ 58 struct node *p,*last;
+ 59 int i,n,ele;
+ 60 printf("Enter n value:\n");
+ 61 scanf("%d",&n);
+ 62 for(i=0;i<n;i++)
+ 63 {
+ 64 p=(struct node *)malloc(sizeof(struct node));
+65 printf("Enter the element:\n");
+ 66 scanf("%d",&ele);
+ 67 p->data=ele;
+ 68 p->pre=NULL;
+ 69 p->next=NULL;
+ 70 if(dl==NULL)
+ 71 {
+ 72 dl=p;
+ 73 last=p;
+ 74 }
+ 75 else
+ 76 {
+ 77 p->pre=last;
+ 78 last->next=p;
+ 79 last=p;
+ 80 }
+ 81 }
+ 82 return dl;
+ 83 }
+ 84 void print(struct node *dl)
+ 85 {
+ 86 while(dl!=NULL)
+ 87 {
+ 88 printf("Element=%d\n",dl->data);
+ 89 dl=dl->next;
+ 90 }
+ 91 }
+ 92 struct node * insert_beg(struct node *dl)
+ 93 {
+ 94 dl=create_dl(dl);
+ 95 int element;
+ 96 struct node *p;
+ 97 printf("Enter a new element to insert at beginning:\n");
+ 98 scanf("%d",&element);
+ 99 p=(struct node *)malloc(sizeof(struct node));
+100 p->data=element;
+101 p->pre=NULL;
+102 p->next=NULL;
+103 p->next=dl;
+104 dl->pre=p;
+105 dl=p;
+106 return dl;
+107 }
+108 struct node * insert_end(struct node *dl)
+109 {
+110 dl=create_dl(dl);
+111 struct node *p,*q;
+112 int element;
+113 printf("Enter a new element to insert at ending:\n");
+114 scanf("%d",&element);
+115 p=(struct node *)malloc(sizeof(struct node));
+116 p->data=element;
+117 p->pre=NULL;
+118 p->next=NULL;
+119 q=dl;
+120 while(q->next!=NULL)
+121 {
+122 q=q->next;
+123 }
+124 q->next=p;
+125 p->pre=q;
+126 return dl;
+127 }
+128 struct node * insert_val(struct node *dl)
+129 {
+130 dl=create_dl(dl);
+131 int val,element;
+132 struct node *p,*q;
+133 printf("Enter the value:\n");
+134 scanf("%d",&val);
+135 printf("Enter an Element to insert:\n");
+136 scanf("%d",&element);
+137 p=(struct node *)malloc(sizeof(struct node));
+138 p->data=element;
+139 p->pre=NULL;
+140 p->next=NULL;
+141 q=dl;
+142 while(q!=NULL&&q->data!=val)
+143 {
+144 q=q->next;
+145 }
+146 p->next=q->next;
+147 p->pre=q;
+148 q->next->pre=p;
+149 q->next=p;
+150 return dl;
+151 }
+152 struct node * insert_pos(struct node *dl)
+153 {
+154 dl=create_dl(dl);
+155 int pos,element,i;
+156 struct node *p,*q;
+157 p=(struct node *)malloc(sizeof(struct node));
+158 printf("Enter position:\n");
+159 scanf("%d",&pos);
+160 printf("Enter an element to insert:\n");
+161 scanf("%d",&element);
+162 p->data=element;
+163 p->pre=NULL;
+164 p->next=NULL;
+165 q=dl;
+166 if(pos==1)
+167 {
+168 p->next=dl;
+169 dl->pre=p;
+170 dl=p;
+171 }
+172 else
+173 {
+174 for(i=0;i<pos-2;i++)
+175 {
+176 q=q->next;
+177 }
+178 p->next=q->next;
+179 p->pre=q;
+180 q->next->pre=p;
+181 q->next=p;
+182 }
+183 return dl;
+184 }
+185 struct node * delete_beg(struct node *dl)
+186 {
+187 dl=create_dl(dl);
+188 struct node *p;
+189 p=dl;
+190 dl->next->pre=NULL;
+191 dl=dl->next;
+192 free(p);
+193 return dl;
+194 }
+195 struct node * delete_end(struct node *dl)
+196 {
+197 dl=create_dl(dl);
+198 struct node *p,*q;
+199 q=dl;
+200 while(q->next->next!=NULL)
+201 {
+202 q=q->next;
+203 }
+204 p=q->next;
+205 q->next->pre=NULL;
+206 q->next=NULL;
+207 free(p);
+208 return dl;
+209 }
+210 struct node * delete_val(struct node *dl)
+211 {
+212 dl=create_dl(dl);
+213 int val;
+214 struct node *p,*q;
+215 printf("Enter the value:\n");
+216 scanf("%d",&val);
+217 q=dl;
+218 while(q->next!=NULL&&q->data!=val)
+219 {
+220 q=q->next;
+221 }
+222 q->pre->next=q->next;
+223 q->next->pre=q->pre;
+224 free(q);
+225 return dl;
+226 }
+227 struct node * delete_pos(struct node *dl)
+228 {
+229 dl=create_dl(dl);
+230 struct node *q;
+231 int i,pos;
+232 printf("Enter position:\n");
+233 scanf("%d",&pos);
+234 q=dl;
+235 for(i=0;i<pos-1;i++)
+236 {
+237 q=q->next;
+238 }
+239 q->pre->next=q->next;
+240 q->next->pre=q->pre;
+241 free(q);
+242 return dl;
+243 }
